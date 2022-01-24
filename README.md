@@ -116,10 +116,6 @@ To get the operating system info, we use a npm package called `systeminformation
 
 - Implement verify email address (to ensure that the user's email isn't unusable)
 
-- Implement the typescript version
-
-- Make use OOP of javascript in this mini project
-
 ## Tools for this mini project
 
 - Visual studio code
