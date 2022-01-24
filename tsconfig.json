@@ -1,0 +1,18 @@
+{
+    "include": [
+        "src/**/*"
+    ],
+    "compilerOptions": {
+        "outDir": "dist",
+        "target" : "ES2016",
+        "strict": true,
+        "rootDir": "./src",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
