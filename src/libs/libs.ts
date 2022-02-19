@@ -3,10 +3,8 @@
  */
 import bcryptjs from "bcryptjs";
 import systeminformation from "systeminformation";
-import verifier from "email-verify";
 
 /**
- * 
  * @param stringToHash 
  * @returns {string} hashed string
  */
@@ -37,24 +35,4 @@ type emailvr = {
     addr:string
 }
 
-/**
- * Verifi que l'addresse email existe et est valide
- * @param {string} email 
- * @returns {boolean} True is the email exist and is valid, false otherwhise
- */
-let VerifyEmail:Function = function (email:string):boolean {
-    // Email format must be valid
-    if (!checkValidEmail(email)) return false;
-    try{
-        verifier.verify( `${email}`, function( err:Error, info:emailvr ){
-            if( err ) return false;
-            if (!info.success) return false;
-            return true;
-          });
-    }catch(error) {
-        return false;
-    }
-    return false;
-}
-
-export {hashSync, verifySync, getDeviceSerialNumber, checkValidEmail, checkValidPassword, VerifyEmail};
+export {hashSync, verifySync, getDeviceSerialNumber, checkValidEmail, checkValidPassword};
