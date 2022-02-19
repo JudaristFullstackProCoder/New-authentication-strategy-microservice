@@ -27,8 +27,8 @@ app.use("*", NotFound);
 // start the server if the database connection succed
 try {
     connection(config.mongodb);
-    app.listen(4422);
-    console.log(`app is running on port ${4422}`);
+    app.listen(2022);
+    console.log(`app is running on port ${2022}`);
 }
 catch (err) {
     console.log("The server can't start ");
