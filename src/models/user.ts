@@ -27,6 +27,10 @@ const userSchema = new Schema ({
      type : Schema.Types.String,
      required : [true , "user password is required"],
      trim:true
+ },
+ isValidate : {
+     type: mongoose.Schema.Types.Mixed,
+     required: true
  }
 });
 
