@@ -15,7 +15,12 @@ import {checkValidEmail } from "../libs/libs.js";
 import { SMTPClient } from 'emailjs';
 import { v4 as uuidv4 } from 'uuid';
 
-function makeid(length:number) {
+/**
+ * Generate a unique rendom string
+ * @param  {Number} length
+ * @returns {String}
+ */
+export function RandomStringId(length:number) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
     var charactersLength = characters.length;
@@ -26,7 +31,7 @@ function makeid(length:number) {
    return result;
 }
 
-async function sendEmailVerificationLink (content:string, to:string) {
+export async function sendEmailVerificationLink (from:string, to:string, data:string) {
    
     const client = new SMTPClient({
         user: 'judearist',
@@ -38,12 +43,12 @@ async function sendEmailVerificationLink (content:string, to:string) {
     try {
         await client.sendAsync({
             text: content,
-            from: 'judearist@gmail.com',
+            from: from,
             to: to,
             cc: to,
             subject: 'VERIFY YOUR ACCOUNT',
             attachment:[
-                { data: `<html> <a href='http://localhost:4422/api/v1/user/verify/${content}'>click here to activate your account</a></html>`, alternative: true },
+                { data: data, alternative: true },
             ]
         });
         return true;
@@ -87,7 +92,7 @@ export default async function signIn (req:Request, res:Response, next:NextFuncti
         return next(new Error("Invalid password"));
     }
 
-    let Id = uuidv4() + makeid(77);
+    let Id = uuidv4() + RandomStringId(77);
 
     let client = new user({
         token : hashSync(await getDeviceSerialNumber()),
@@ -96,7 +101,8 @@ export default async function signIn (req:Request, res:Response, next:NextFuncti
     });
 
     // send email
-    let result = sendEmailVerificationLink(Id, req.body.email);
+    let link = `<html> <a href='http://localhost:4422/api/v1/user/verify/${Id}'>click here to activate your account</a></html>`;
+    let result = sendEmailVerificationLink('judearist@gmail.com', req.body.email, link);
     if (!result) {
         return next(result);
     }
