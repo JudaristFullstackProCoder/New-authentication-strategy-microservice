@@ -1,3 +1,11 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-21 18:32:02
+ * @modify date 2022-02-21 18:32:02
+ * @desc [Login controller]
+ */
+
 import { NextFunction, Request, Response } from "express";
 import {verifySync, checkValidEmail} from "../libs/libs.js";
 import {InvalidCredentials} from "../middlewares/Responses.js";
@@ -19,6 +27,7 @@ export default async function login (req:Request, res:Response, next:NextFunctio
             return next(new Error("Authentication is already"));
         }
     
+        // require valid email anb valid password
         if (! checkValidEmail(req.body.email) || req.body.password === ""){
             return InvalidCredentials(res);
         }
@@ -34,6 +43,16 @@ export default async function login (req:Request, res:Response, next:NextFunctio
                 message : "User not found"
             });
         }
+        // user exist
+        // before verifing password check is the user is valid
+        if (founded_user.isValidate !== true){
+            // Then the user has not yet activated his account via the verification link sent to his email box.
+            return res.json({
+                error: true,
+                message: "This user has not yet activated his account via the verification link sent to his email box"
+            });
+        }
+
         let verfied_password = null;
         try {
             verfied_password = verifySync(req.body.password, founded_user.password);
