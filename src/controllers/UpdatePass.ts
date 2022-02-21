@@ -1,3 +1,11 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-21 18:39:25
+ * @modify date 2022-02-21 18:39:25
+ * @desc [Update password controller]
+ */
+
 import { NextFunction, Request, Response } from "express";
 import { checkUserAuthentication } from "../middlewares/Authentication.js";
 import {AuthenticationRequired, InvalidCredentials, Succes, UnknowError} from "../middlewares/Responses.js";
