@@ -9,62 +9,6 @@ The answer is that, in fact i wanted to build my own authentication method wich 
 
 When a user signin, user informations (username, password, email address, auth token) is saved into database. The auth token is generated from the serial number of the operating system of the device encrypted (hash) wich `bcryptjs`. On user login, the user_token is refreshed. After signin or login, a cookie is setted with the name of `auth_token` and the value of `the user authentication token`. To know if the user if connected, on each request that require autentication, we can write a middleware function that verify that the cookie `user_token` value is compared with the device serial number encrypted in bcryptjs; if in a request we can't verify the authenticity of the token, the the user isn't logged hand we can handle this case.
 
-## Detailed operation steps
-
-    - On SignIn : 
-
-        * Verify that the user is not already logged in
-
-        * Retrieve informations from the request
-
-        * Verify that email address don't already exist
-
-        * Verification of the email (verify that isn't unusable)
-
-        * Get os informations and generate authentication token
-
-        * Hash password
-        
-        * Save the user in database
-
-        * Return a response with a token (in cookie)
-    
-    - On Login :
-
-        * Verify that the user is not already logged in
-
-        * Retrieve username and password from the request
-
-        * Find user by email
-
-        * Verify password
-
-        * Return a response with a token (in cookie)
-
-    - On Logout :
-
-        * Verify that the user is authenticated
-
-        * Remove token cookie from cookies
-
-        * Return a response
-
-    - On update password : 
-
-        * Require user authentication
-
-        * Retrieve informations from the request (old and new password)
-
-        * Check that the two passwords are equal and validate them
-
-        * Update the user's password in database
-
-        * Return a response
-
-    - On reset password :
-    
-        *
-
 ## How its secure ?
 
 Its secure for many reason :
