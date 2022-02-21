@@ -16,6 +16,7 @@ import clientErrorHandler from '../middlewares/ClientErrorHandler.js';
 import ErrorLogger from '../middlewares/ErrorLogger.js';
 import NotFound from '../middlewares/NotFound.js';
 import config from "../config.js";
+import AU from "../controllers/ActivateUser.js";
 
 // Middleware
 app.use(bodyParser.urlencoded({extended : true}));
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use("/api/v1", appRoutes);
+app.get("/api/v1/user/verify", AU);
 
 // Error handler middleware
 app.use(ErrorLogger, clientErrorHandler);
