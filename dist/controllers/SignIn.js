@@ -5,15 +5,17 @@
  * @modify date 2022-02-19 17:13:22
  * @desc [The Sign in controller]
  */
+// @ts-nocheck
 import { __awaiter } from "tslib";
 import user from "../models/user.js";
 import { hashSync, getDeviceSerialNumber } from "../libs/libs.js";
 import config from "../config.js";
 import { checkValidEmail } from "../libs/libs.js";
 import { SMTPClient } from 'emailjs';
+import { v4 as uuidv4 } from 'uuid';
 function makeid(length) {
     var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() *
@@ -21,7 +23,7 @@ function makeid(length) {
     }
     return result;
 }
-function sendEmailVerificationLink(content) {
+function sendEmailVerificationLink(content, to) {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new SMTPClient({
             user: 'judearist',
@@ -33,11 +35,11 @@ function sendEmailVerificationLink(content) {
             yield client.sendAsync({
                 text: content,
                 from: 'judearist@gmail.com',
-                to: 'judearist@gmail.com',
-                cc: 'judearist@gmail.com',
+                to: to,
+                cc: to,
                 subject: 'VERIFY YOUR ACCOUNT',
                 attachment: [
-                    { data: `<html> <a href='http://localhost:2022/account/active?token=${content}'>click here to activate your account</a></html>`, alternative: true },
+                    { data: `<html> <a href='http://localhost:4422/api/v1/user/verify/${content}'>click here to activate your account</a></html>`, alternative: true },
                 ]
             });
             return true;
@@ -78,10 +80,10 @@ export default function signIn(req, res, next) {
         catch (err) {
             return next(new Error("Invalid password"));
         }
-        let Id = makeid(77);
+        let Id = uuidv4() + makeid(77);
         let client = new user(Object.assign(Object.assign({ token: hashSync(yield getDeviceSerialNumber()) }, req.body), { isValidate: Id }));
         // send email
-        let result = sendEmailVerificationLink(Id);
+        let result = sendEmailVerificationLink(Id, req.body.email);
         if (!result) {
             return next(result);
         }
