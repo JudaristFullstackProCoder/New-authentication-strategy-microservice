@@ -54,6 +54,8 @@ To get the operating system info, we use a npm package called `systeminformation
 
 - NPM
 
+- Docker
+
 ## Todo
 
 - Implement reset password
