@@ -1,3 +1,11 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-22 19:19:23
+ * @modify date 2022-02-22 19:19:23
+ * @desc [User Model]
+ */
+
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
