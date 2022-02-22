@@ -40,6 +40,7 @@
   },
   "scripts": {
     "dev": "concurrently -k -n \"Typescript,Nodemon\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\"  \"nodemon dist/server/server.js\"",
-    "pm2": "pm2 start ./dist/server/server.js"
+    "pm2": "pm2 start ./dist/server/server.js",
+    "prod" : "node ./dist/server/server.js"
   }
 }
