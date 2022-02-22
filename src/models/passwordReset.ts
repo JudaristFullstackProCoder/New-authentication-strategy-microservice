@@ -26,7 +26,7 @@ const passResetSchema = new Schema({
         /**
          * started : the user made a request to reset his password and a code was sent to him by email
          * pending : the user to enter the corresponding code allowing him to reset his password
-         * done : the user to reset his password after entering the code
+         * done : The user to reset his password
          */
     }
 });
