@@ -1,3 +1,12 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-22 19:15:59
+ * @modify date 2022-02-22 19:15:59
+ * @desc [Authentication middleware]
+ */
+
+
 import { NextFunction, Request, Response } from "express";
 import {verifySync} from "../libs/libs.js";
 import {getDeviceSerialNumber} from "../libs/libs.js";
