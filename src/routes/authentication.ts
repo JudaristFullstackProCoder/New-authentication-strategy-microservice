@@ -1,3 +1,11 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-22 19:20:02
+ * @modify date 2022-02-22 19:20:02
+ * @desc [Routes for authentication]
+ */
+
 // Library imports
 import express from "express";
 const router = express.Router();
