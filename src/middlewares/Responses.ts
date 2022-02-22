@@ -9,6 +9,9 @@ import config from "../config.js"
  * @returns {Response}
  */
 let NotFound:Function = function (req:Request, res:Response, next:NextFunction) : Response {
+    if(res.headersSent) { 
+
+     }
     return res.status(404).json({});
 }
 
@@ -18,6 +21,9 @@ let NotFound:Function = function (req:Request, res:Response, next:NextFunction) 
  * @returns {Response}
  */
 let InvalidCredentials:Function = function (res:Response) {
+    if(res.headersSent) { 
+        
+    }
     res.status(403).json({
         error : true,
         message : "Invalid Credentials"
@@ -30,6 +36,9 @@ let InvalidCredentials:Function = function (res:Response) {
  * @returns {Response}
  */
 let AuthenticationRequired:Function = function (res:Response) :Response {
+    if(res.headersSent) { 
+        
+    }
     return res.status(403).json({
         error : true,
         data : "Authentication required"
@@ -44,20 +53,40 @@ let AuthenticationRequired:Function = function (res:Response) :Response {
  * @returns 
  */
 let Logout:Function =  function (req:Request, res:Response, next:NextFunction) {
+    if(res.headersSent) { 
+        
+    }
     return res.clearCookie(config.user_token).json({
         success : true,
         data : "logout"
     });
 }
 
+/**
+ * 
+ * @param res 
+ * @returns 
+ */
 let UnknowError:Function = function (res:Response) {
+    if(res.headersSent) { 
+        
+    }
     return res.status(500).json({
         error : true,
         data: "An error occured, please retry !"
     });
 }
 
-let Succes:Function = function (res:Response, data:any) {
+/**
+ * 
+ * @param res 
+ * @param data 
+ * @returns 
+ */
+let Succes:Function = function (res:Response, data:any="OK") {
+    if(res.headersSent) { 
+        
+    }
     return res.status(200).json({
         succes: true,
         data: data
