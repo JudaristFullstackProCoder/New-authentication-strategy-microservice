@@ -8,9 +8,12 @@
 
 import { NextFunction, Response, Request } from "express";
 import { checkValidEmail } from "../libs/libs";
+import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses";
 import passResetModel from "../models/passwordReset";
 import User from "../models/user";
 import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode} from "./SignIn";
+
+const unexpectedError = new Error("an unexpected error has just occurred, please try again :)");
 
 export async function resetPassword (req:Request, res:Response, next:NextFunction) {
     let email = req.body.email;
@@ -37,10 +40,10 @@ export async function resetPassword (req:Request, res:Response, next:NextFunctio
             let resetcode = RandomStringId(22);
             sendEmailResetCode("judearist@gmail.com", email, resetcode);
         }catch(err){
-            return next(new Error("an unexpected error has just occurred, please try again :)"));
+            return next(unexpectedError);
         }
     }catch(err){
-        return next(new Error("an unexpected error has just occurred, please try again :)"));
+        return next(unexpectedError);
     }
     // create a new password reset
     try{
@@ -57,10 +60,87 @@ export async function resetPassword (req:Request, res:Response, next:NextFunctio
 }
 
 export async function passwordResetControllerVerifyCode (req:Request, res:Response, next:NextFunction) {
+    let email = req.body.email;
+    let code = req.body.code;
+    // Check that the code and the email are in the database (corresponds).
+    try{
+        let reset = await passResetModel.findOne({
+            email: email,
+            code: code,
+            status: "started"
+        }).exec();
 
+        if(!reset){
+            // This code and this email address do not correspond to a database record.
+            return NotFound(req, res, next);
+        }
+        // This code and this email address correspond to a record in the database.
+        let updated = passResetModel.findOneAndUpdate({
+            email: email,
+            code: code,
+            status: "started"
+        }, {
+            status: "pending"
+        }, {
+            new: true
+        }).exec();
+        return Succes(updated);
+
+    }catch(err){
+        return next(unexpectedError);
+    }
 }
 
 
 export async function passwordResetControllerNewCredentials (req:Request, res:Response, next:NextFunction) {
+   
+    let email = req.body.email;
+    let code = req.body.code;
+    let password = req.body.password;
+    let confirmPassword = req.body.confirmPassword;
+
+    if (password !== confirmPassword){
+        return InvalidCredentials(res);
+    }
+
+    try{
+        let reset = passResetModel.findOne({
+            email: email,
+            code: code,
+            status: "pending"
+        }).exec();
+
+        if (!reset) {
+            return NotFound(req, res, next);
+        }
+
+        // update password
+        let updated = User.findOneAndUpdate({
+            email: email
+        }, {
+            password: password
+        }, {
+            new: true
+        }).exec();
+
+        if (!updated){
+            return next(unexpectedError);
+        }
+        // update the resetPassword record to "done" because the user has finished to reset his password
+        let updatedStatus = passResetModel.findOneAndUpdate({
+            email: email,
+            code: code,
+            status: "pending"
+        }, {
+            status: "done"
+        }, {
+            new: true
+        }).exec();
+
+        return Succes(res, {...updated, updatedStatus});
+
+    }catch(err){
+        return next(unexpectedError);
+    }
 
 }
