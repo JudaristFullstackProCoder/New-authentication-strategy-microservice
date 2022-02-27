@@ -8,7 +8,6 @@
 import { __awaiter } from "tslib";
 import { checkUserAuthentication } from "../middlewares/Authentication.js";
 import { AuthenticationRequired, InvalidCredentials, Succes, UnknowError } from "../middlewares/Responses.js";
-import config from "../config.js";
 import { checkValidPassword, hashSync } from "../libs/libs.js";
 import user from "../models/user.js";
 export default function UpdatePass(req, res, next) {
@@ -32,9 +31,9 @@ export default function UpdatePass(req, res, next) {
             (pass !== confirm_pass) || (pass === "") || (confirm_pass === "")) {
             return InvalidCredentials(res);
         }
-        else if (pass === confirm_pass) {
+        else if (pass === confirm_pass && process.env.user_token) {
             let replacement = yield user.findOneAndUpdate({
-                token: req.cookies[config.user_token]
+                token: req.cookies[process.env.user_token]
             }, {
                 password: hashSync(confirm_pass)
             }, {

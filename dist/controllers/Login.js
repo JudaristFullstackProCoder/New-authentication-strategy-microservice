@@ -10,7 +10,6 @@ import { verifySync, checkValidEmail } from "../libs/libs.js";
 import { InvalidCredentials } from "../middlewares/Responses.js";
 import { checkUserAuthentication } from "../middlewares/Authentication.js";
 import user from "../models/user.js";
-import config from "../config.js";
 export default function login(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         // require required fields
@@ -58,8 +57,8 @@ export default function login(req, res, next) {
         if (verfied_password === false) {
             return InvalidCredentials(res);
         }
-        else if (verfied_password === true) {
-            return res.status(200).cookie(config.user_token, founded_user.token, {
+        else if (verfied_password === true && process.env.user_token) {
+            return res.status(200).cookie(process.env.user_token, founded_user.token, {
                 maxAge: 31560000000 // A year !
             }).json({
                 success: true,
