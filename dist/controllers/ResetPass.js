@@ -8,8 +8,8 @@
 import { __awaiter } from "tslib";
 import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses.js";
 import passResetModel from "../models/passwordReset.js";
-import User from "../models/user";
-import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode } from "./SignIn";
+import User from "../models/user.js";
+import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode } from "./SignIn.js";
 import { hashSync, checkValidEmail } from "../libs/libs.js";
 const unexpectedError = new Error("an unexpected error has just occurred, please try again :)");
 export function resetPassword(req, res, next) {
