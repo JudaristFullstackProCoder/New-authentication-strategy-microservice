@@ -36,11 +36,11 @@
     "concurrently": "^7.0.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.5"
   },
   "scripts": {
     "dev": "concurrently -k -n \"Typescript,Nodemon\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\"  \"nodemon dist/server/server.js\"",
     "pm2": "pm2 start ./dist/server/server.js",
-    "prod" : "node ./dist/server/server.js"
+    "prod": "node ./dist/server/server.js"
   }
 }
