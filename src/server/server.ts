@@ -60,7 +60,7 @@ try {
     }else{
         connection(process.env.mongodb || "")
     }
-    app.listen(process.env.port);
+    app.listen(process.env.PORT);
     // console.log(`app is running on port ${process.env.port}`);
 }catch(err) {
     // console.log("The server can't start ");
