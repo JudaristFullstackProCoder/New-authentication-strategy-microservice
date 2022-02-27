@@ -12,7 +12,7 @@ import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses";
 import passResetModel from "../models/passwordReset";
 import User from "../models/user";
 import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode} from "./SignIn";
-import { hashSync } from "../libs/libs";
+import { hashSync } from "../libs/libs.js";
 
 const unexpectedError = new Error("an unexpected error has just occurred, please try again :)");
 
