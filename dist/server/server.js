@@ -13,8 +13,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 // .env file
-require("dotenv").config({ path: require("path").resolve(".env") });
-require("dotenv").config({ path: require("path").resolve(".env.dev") });
+import { resolve } from "path";
+import { config } from "dotenv";
+config({ path: resolve(".env") });
+config({ path: resolve(".env.dev") });
 const app = express();
 // custom modules imports
 import appRoutes from "../routes/authentication.js";
