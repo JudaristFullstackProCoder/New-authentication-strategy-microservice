@@ -12,6 +12,7 @@ import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses";
 import passResetModel from "../models/passwordReset";
 import User from "../models/user";
 import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode} from "./SignIn";
+import { hashSync } from "../libs/libs";
 
 const unexpectedError = new Error("an unexpected error has just occurred, please try again :)");
 
@@ -26,6 +27,7 @@ export async function resetPassword (req:Request, res:Response, next:NextFunctio
         let user = User.findOne({
             email: email
         }).exec();
+
         if (!user){
             // the email is fake
             return res.json({
@@ -35,28 +37,36 @@ export async function resetPassword (req:Request, res:Response, next:NextFunctio
         }
         // this email is legit
         // send a code (reset code ) this email
-        try{
-            // Size of 22 to be reassured of the uniqueness of the code
-            let resetcode = RandomStringId(22);
-            sendEmailResetCode("judearist@gmail.com", email, resetcode);
-        }catch(err){
-            return next(unexpectedError);
-        }
-    }catch(err){
-        return next(unexpectedError);
-    }
-    // create a new password reset
-    try{
+        // Size of 22 to be reassured of the uniqueness of the code
+        let resetcode = RandomStringId(22);
+        await sendEmailResetCode("judearist@gmail.com", email, resetcode);
+        // register the sended email in db
+        // create a new password reset
         let passwordReset = await passResetModel.findOne({
-            email : email
+            email : email,
+            status: "started"
         }).exec();
 
         if (passwordReset !== null){
             // then we have already send a code to this email to reset password
+            // delete the old db record
+            await passResetModel.findOneAndDelete({
+                _id: passwordReset._id
+            }).exec();
         }
+
+        let passResetDocument = new passResetModel({
+            email: email,
+            code: resetcode,
+            status: "start"
+        });
+
+        await passResetDocument.save();
+
     }catch(err){
-        return next(err);
+        return next(unexpectedError);
     }
+
 }
 
 export async function passwordResetControllerVerifyCode (req:Request, res:Response, next:NextFunction) {
@@ -84,6 +94,7 @@ export async function passwordResetControllerVerifyCode (req:Request, res:Respon
         }, {
             new: true
         }).exec();
+
         return Succes(updated);
 
     }catch(err){
@@ -118,7 +129,7 @@ export async function passwordResetControllerNewCredentials (req:Request, res:Re
         let updated = User.findOneAndUpdate({
             email: email
         }, {
-            password: password
+            password: hashSync(password)
         }, {
             new: true
         }).exec();
