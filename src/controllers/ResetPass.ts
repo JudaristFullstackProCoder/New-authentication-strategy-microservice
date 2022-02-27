@@ -7,9 +7,9 @@
  */
 
 import { NextFunction, Response, Request } from "express";
-import { checkValidEmail } from "../libs/libs";
-import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses";
-import passResetModel from "../models/passwordReset";
+import { checkValidEmail } from "../libs/libs.js";
+import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses.js";
+import passResetModel from "../models/passwordReset.js";
 import User from "../models/user";
 import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode} from "./SignIn";
 import { hashSync } from "../libs/libs.js";

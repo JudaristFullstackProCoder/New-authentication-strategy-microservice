@@ -11,7 +11,6 @@ import {verifySync, checkValidEmail} from "../libs/libs.js";
 import {InvalidCredentials} from "../middlewares/Responses.js";
 import { checkUserAuthentication } from "../middlewares/Authentication.js";
 import user from "../models/user.js";
-import config from "../config.js";
 
 export default async function login (req:Request, res:Response, next:NextFunction) {
         // require required fields
@@ -62,9 +61,9 @@ export default async function login (req:Request, res:Response, next:NextFunctio
         
         if (verfied_password === false) {
             return InvalidCredentials(res);
-        }else if (verfied_password === true) {
+        }else if (verfied_password === true && process.env.user_token) {
             return res.status(200).cookie(
-                config.user_token,  founded_user.token, {
+                process.env.user_token,  founded_user.token, {
                     maxAge : 31560000000 // A year !
                 }
             ).json({
