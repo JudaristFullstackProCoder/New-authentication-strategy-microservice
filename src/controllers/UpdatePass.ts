@@ -9,7 +9,6 @@
 import { NextFunction, Request, Response } from "express";
 import { checkUserAuthentication } from "../middlewares/Authentication.js";
 import {AuthenticationRequired, InvalidCredentials, Succes, UnknowError} from "../middlewares/Responses.js";
-import config from "../config.js"
 import {checkValidPassword, hashSync} from "../libs/libs.js";
 import user from "../models/user.js";
 
@@ -34,9 +33,9 @@ export default async function UpdatePass (req:Request, res:Response, next:NextFu
     (pass !==  confirm_pass) ||( pass === "") || (confirm_pass === "") )
     {
         return InvalidCredentials(res);
-    }else if(pass === confirm_pass) {
+    }else if(pass === confirm_pass && process.env.user_token) {
         let replacement = await user.findOneAndUpdate({
-            token : req.cookies[config.user_token]
+            token : req.cookies[process.env.user_token]
         }, {
             password : hashSync(confirm_pass)
         }, {
