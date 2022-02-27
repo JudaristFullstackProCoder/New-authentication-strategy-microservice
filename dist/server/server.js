@@ -1,3 +1,10 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-22 19:20:26
+ * @modify date 2022-02-22 19:20:26
+ * @desc [Authentication Server]
+ */
 // Built-in modules imports
 import cookieParser from "cookie-parser";
 import cors from "cors";
