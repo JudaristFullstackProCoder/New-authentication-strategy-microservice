@@ -1,5 +1,13 @@
+/**
+ * @author [Judarist Fullstack]
+ * @email [judearist@mail.com]
+ * @create date 2022-02-27 22:09:58
+ * @modify date 2022-02-27 22:09:58
+ * @desc [Response middleware : a collection of middlewares for different type of response eg: 
+ * Not found (404), OK (200), Server Error (500), Authentication require (403)]
+ */
+
 import { NextFunction, Request, Response } from "express";
-import config from "../config.js"
 
 /**
  * 
@@ -56,10 +64,14 @@ let Logout:Function =  function (req:Request, res:Response, next:NextFunction) {
     if(res.headersSent) { 
         
     }
-    return res.clearCookie(config.user_token).json({
-        success : true,
-        data : "logout"
-    });
+    if (process.env.user_token){
+        return res.clearCookie(process.env.user_token).json({
+            success : true,
+            data : "logout"
+        });
+    }else{
+       return next(new Error(`the app require a process variable called ${process.env.user_token}`));
+    }
 }
 
 /**
