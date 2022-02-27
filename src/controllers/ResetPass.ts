@@ -7,12 +7,11 @@
  */
 
 import { NextFunction, Response, Request } from "express";
-import { checkValidEmail } from "../libs/libs.js";
 import { NotFound, Succes, InvalidCredentials } from "../middlewares/Responses.js";
 import passResetModel from "../models/passwordReset.js";
 import User from "../models/user";
 import { RandomStringId, sendEmailVerificationLink as sendEmailResetCode} from "./SignIn";
-import { hashSync } from "../libs/libs.js";
+import { hashSync, checkValidEmail } from "../libs/libs.js";
 
 const unexpectedError = new Error("an unexpected error has just occurred, please try again :)");
 
