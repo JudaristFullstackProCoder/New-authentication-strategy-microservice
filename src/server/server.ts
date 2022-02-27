@@ -39,6 +39,12 @@ app.use(cookieParser());
 app.use(helmet());
 app.use("/api/v1", appRoutes);
 app.get("/api/v1/user/verify", AU);
+app.get("/", function (req, res) {
+    return res.json({
+        success: true,
+        data: "This is the homepage of the api"
+    })
+});
 
 // Error handler middleware
 app.use(ErrorLogger, clientErrorHandler);
