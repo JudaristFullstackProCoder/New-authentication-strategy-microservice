@@ -33,6 +33,12 @@ app.use(cookieParser());
 app.use(helmet());
 app.use("/api/v1", appRoutes);
 app.get("/api/v1/user/verify", AU);
+app.get("/", function (req, res) {
+    return res.json({
+        success: true,
+        data: "This is the homepage of the api"
+    });
+});
 // Error handler middleware
 app.use(ErrorLogger, clientErrorHandler);
 // Handle not found route
@@ -45,7 +51,7 @@ try {
     else {
         connection(process.env.mongodb || "");
     }
-    app.listen(process.env.port);
+    app.listen(process.env.PORT);
     // console.log(`app is running on port ${process.env.port}`);
 }
 catch (err) {
