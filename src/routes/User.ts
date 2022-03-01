@@ -14,4 +14,4 @@ Router.get("/user/:id", getUser);
 Router.patch("/user/:id", UpdateUser);
 Router.delete("/user/:id", DeleteUser);
 
-module.exports = Router;
+export default Router;
