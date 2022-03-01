@@ -21,12 +21,14 @@ Its secure for many reason :
 
 ## Api Routes are
 
-- `POST`  /api/v1/user/login    `[email    , password]`
-- `POST`  /api/v1/user/signin   `[name(min 4 caracters)    , email, password(min 8 caracters)]`
-- `POST`  /api/v1/user/reset-password   `[No field required]`
-- `POST`  /api/v1/user/update-password  `[password (old password)    , password_confirmation (new password)]`
-- `POST`  /api/v1/user/is-authenticated `[No field required]`
-- `POST`  /api/v1/user/logout   `[No field required]`
+- `POST`  /api/v1/user/login    [`email    , password`]
+- `POST`  /api/v1/user/signin   [`name(min 4 caracters)    , email, password(min 8 caracters)`]
+- `POST`  /api/v1/user/reset-password   [`No field required`]
+- `POST`  /api/v1/user/update-password  [`password (old password)    , password_confirmation (new password)`]
+-   `POST` /api/v1/reset-password/code [`email (The email where the password reset code was sent), code (the code that was sent by email)`]
+- `POST`  /api/v1/reset-password/new-credentials [`email, code, password (new password), confirmPassword (password confirmation)`]
+- `POST`  /api/v1/user/is-authenticated [`No field required`]
+- `POST`  /api/v1/user/logout   [`No field required`]
 
 ## The issues if this authentication method
 
