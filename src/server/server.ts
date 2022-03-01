@@ -30,6 +30,7 @@ import clientErrorHandler from '../middlewares/ClientErrorHandler.js';
 import ErrorLogger from '../middlewares/ErrorLogger.js';
 import NotFound from '../middlewares/NotFound.js';
 import AU from "../controllers/ActivateUser.js";
+import UserRoutes from "../routes/User.js";
 
 // Middleware
 app.use(bodyParser.urlencoded({extended : true}));
@@ -38,6 +39,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use("/api/v1", appRoutes);
+app.use("/api/v1", UserRoutes);
 app.get("/api/v1/user/verify", AU);
 app.get("/", function (req, res) {
     return res.json({
